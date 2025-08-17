@@ -1,10 +1,9 @@
-import React, { ChangeEvent, useState, useRef, KeyboardEvent, useEffect } from 'react';
+import { ChangeEvent, useState, useRef, KeyboardEvent, useEffect } from 'react';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
 import { useBoardStore, useLoginUserStore } from 'stores';
-import path from 'path';
 
 //          component: 헤더 레이아웃          //
 export default function Header() {
@@ -81,7 +80,6 @@ export default function Header() {
         setWord(searchWord);
         setStatus(true);
       }
-
     }, [searchWord])
 
     if(!status)
@@ -104,6 +102,7 @@ export default function Header() {
 
   //          component: 로그인 또는 마이페이지 버튼 컴포넌트          //
   const MyPageButton = () => {
+
     //          state: userEmail path variable 상태          //
     const { userEmail } = useParams();
 
@@ -113,7 +112,7 @@ export default function Header() {
       const { email } = loginUser;
       navigate(USER_PATH(email));
     }
-    //          event handler: 마이페이지 버튼 클릭 이벤트 처리 함수         //
+    //          event handler: 로그아웃 버튼 클릭 이벤트 처리 함수         //
     const onSignOutMypageButtonClickHandler = () => {
       resetLoginUser();
       navigate(MAIN_PATH());
@@ -152,6 +151,11 @@ export default function Header() {
   }
 
   //          effect: path가 변경될 때마다 실행될 함수          //
+  // useEffect - 리액트 훅 중 하나, 컴포넌트가 렌더링된 이후에 실행할 부수 효과를 정의하는 함수
+  // ex) API 호출, 이벤트 등록/해제, 특정 값이 변할 때 동작 실행, DOM 직접 조작
+  // 첫 번째 인자: 실행할 함수 - pathname 값이 바뀔 때마다 현재 페이지가 어떤 페이지인지 판별하고, 각각의 상태(setAuthPage, setMainPage, ...)를 업데이트함
+  // 두 번째 인자: [pathname] - pathname 값이 바뀔 때마다 useEffect 안의 함수가 실행됨 
+  // => URL 경로가 바뀔 때마다 실행되는 로직
   useEffect(() => {
     const isAuthPage = pathname.startsWith(AUTH_PATH());
     setAuthPage(isAuthPage);
