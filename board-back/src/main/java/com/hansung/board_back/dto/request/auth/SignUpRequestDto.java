@@ -1,6 +1,5 @@
 package com.hansung.board_back.dto.request.auth;
 
-import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
