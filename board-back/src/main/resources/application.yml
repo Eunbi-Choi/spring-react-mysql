@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: board-back
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/board?serverTimezone=UTC&characterEncoding=UTF-8
+    username: developer
+    password: P!ssw0rd
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 110MB
+
+server:
+  port: 4000
+
+secret-key: S3cr3tk3yS3cr3tk3yS3cr3tk3yS3cr3tk3y
