@@ -1,9 +1,12 @@
 package com.hansung.board_back.service.implement;
 
+import com.hansung.board_back.dto.request.auth.SignInRequestDto;
+import com.hansung.board_back.dto.request.auth.SignInResponseDto;
 import com.hansung.board_back.dto.request.auth.SignUpRequestDto;
 import com.hansung.board_back.dto.response.ResponseDto;
 import com.hansung.board_back.dto.response.auth.SignUpResponseDto;
 import com.hansung.board_back.entity.UserEntity;
+import com.hansung.board_back.provider.JwtProvider;
 import com.hansung.board_back.repository.UserRepository;
 import com.hansung.board_back.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImplement implements AuthService {
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -50,5 +54,32 @@ public class AuthServiceImplement implements AuthService {
         }
 
         return SignUpResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+        String token = null;
+
+        try {
+
+            String email = dto.getEmail();
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if(userEntity == null) return SignInResponseDto.signInFail();
+
+            String password = dto.getPassword();
+            String encodePassword = userEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(password, encodePassword);
+            if(!isMatched) return SignInResponseDto.signInFail();
+
+            token = jwtProvider.create(email);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
+
     }
 }
