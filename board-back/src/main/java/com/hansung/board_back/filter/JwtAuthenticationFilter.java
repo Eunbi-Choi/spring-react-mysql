@@ -24,12 +24,12 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor // final 필드(jwtProvider)를 자동으로 주입받을 수 있도록 생성자를 만들어줌(롬복 기능)
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    // OncePerRequestFilter 상속-> 한 요청당 한 번만 실행되는 필터를 만들 때 사용하는 스프링 제공 클래스. 보통 인증/인가
-    // 관련 로직을 넣는다.
+    // OncePerRequestFilter 상속-> 한 요청당 한 번만 실행되는 필터를 만들 때 사용하는 스프링 제공 클래스
+    // 보통 인증/인가 관련 로직을 넣는다.
 
     private final JwtProvider jwtProvider;
-    // JWT 토큰을 검증하거나 토큰에서 사용자 정보를 추출하는 역할을 하는 JwtProvider를 주입받음. final이라
-    // @RequiredArgsConstructor 덕분에 생성자에서 자동 주입됨.
+    // JWT 토큰을 검증하거나 토큰에서 사용자 정보를 추출하는 역할을 하는 JwtProvider를 주입받음.
+    // final이라 @RequiredArgsConstructor 덕분에 생성자에서 자동 주입됨.
 
     @Override // 실제 요청이 들어올 때 호출되는 메서드
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

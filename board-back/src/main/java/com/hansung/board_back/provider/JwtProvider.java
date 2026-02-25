@@ -43,7 +43,7 @@ public class JwtProvider {
                 .build()
                 .parseClaimsJws(jwt).getBody();
         } catch (Exception exception) {
-            exception.printStackTrace();;
+            exception.printStackTrace();
             return null;
         }
 
